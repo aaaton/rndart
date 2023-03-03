@@ -1,0 +1,200 @@
+<html>
+  <head>
+    <script lang="js" type="module">
+      const width = window.innerWidth * 4;
+      const height = window.innerHeight * 4;
+      function coinFlip() {
+        return Math.random() > 0.5;
+      }
+      function rw() {
+        return Math.random() * width;
+      }
+      function rh() {
+        return Math.random() * height;
+      }
+      function ra() {
+        return Math.random() * 360;
+      }
+      function color() {
+        return `rgba(${Math.random() * 255},${Math.random() *
+          255},${Math.random() * 255}, ${Math.random()})`;
+      }
+      function loopCircle(ctx) {
+        const start = {
+          x: Math.random() * width * 1.5 - width * 0.5,
+          y: Math.random() * height * 1.5 - height * 0.5,
+          r: rh(),
+          sa: ra(),
+          ea: ra(),
+        };
+        const end = {
+          x: Math.random() * width * 1.5 - width * 0.5,
+          y: Math.random() * height * 1.5 - height * 0.5,
+          r: rh(),
+          sa: ra(),
+          ea: ra(),
+        };
+
+        const step = Math.round(100 * Math.random());
+        for (let i = 0; i < step; i++) {
+          ctx.beginPath();
+          ctx.arc(
+            start.x + (i * (end.x - start.x)) / step,
+            start.y + (i * (end.y - start.y)) / step,
+            start.r + (i * (end.r - start.r)) / step,
+            start.sa + (i * (end.sa - start.sa)) / step,
+            start.ea + (i * (end.ea - start.ea)) / step
+          );
+          ctx.stroke();
+          ctx.closePath();
+        }
+      }
+      function vennCircle(ctx) {
+        const center = {
+          x: Math.random() * width * 1.5 - width * 0.5,
+          y: Math.random() * height * 1.5 - height * 0.5,
+          r: rh(),
+          sa: ra(),
+          ea: ra(),
+        };
+        const count = Math.random() * 10;
+        const offset = Math.random() * center.r;
+        const startAngle = ra();
+
+        for (let i = 0; i < count; i++) {
+          const angle = startAngle + (i * 360) / count;
+
+          ctx.beginPath();
+          ctx.arc(
+            center.x + offset * Math.sin((Math.PI * angle) / 180),
+            center.y + offset * Math.cos((Math.PI * angle) / 180),
+            center.r,
+            center.sa + angle,
+            center.ea + angle
+          );
+          ctx.fill();
+        }
+      }
+      function render() {
+        const parent = document.getElementById("hello");
+        const canvas = document.createElement("canvas");
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        let gradientSelect = Math.random();
+        // if (gradientSelect < 0.65) {
+        //   let gradient = null;
+        //   if (gradientSelect < 0.3) {
+        //     gradient = ctx.createLinearGradient(
+        //       0,
+        //       height * Math.random(),
+        //       width,
+        //       height * Math.random()
+        //     );
+        //   } else {
+        //     gradient = ctx.createConicGradient(
+        //       360 * Math.random(),
+        //       height * Math.random(),
+        //       width * Math.random()
+        //     );
+        //   }
+
+        //   gradient.addColorStop(0, color());
+        //   for (let i = 0; i < 100; i++) {
+        //     gradient.addColorStop(Math.random(), color());
+        //     if (Math.random() > 0.5) break;
+        //   }
+        //   ctx.fillStyle = gradient;
+        //   ctx.fillRect(0, 0, width, height);
+        // } else {
+        ctx.fillStyle = color();
+        ctx.fillRect(0, 0, width, height);
+        // }
+        for (let i = 0; i < 50 * Math.random(); i++) {
+          ctx.beginPath();
+          ctx.fillStyle = color();
+          ctx.strokeStyle = color();
+          ctx.lineWidth = Math.max(2, Math.random() * 500 - 300);
+          if (coinFlip()) {
+            ctx.setLineDash([]);
+          } else {
+            ctx.setLineDash([Math.random() * 300, Math.random() * 300]);
+          }
+          //   if (coinFlip()) {
+          //     ctx.lineJoin = "miter";
+          //   } else {
+          //     ctx.lineJoin = "round";
+          //   }
+          //   if (coinFlip()) {
+          //     ctx.lineCap = "butt";
+          //   } else {
+          //     ctx.lineCap = "square";
+          //   }
+          const selector = Math.random();
+
+          //   vennCircle(ctx);
+          if (selector < 0.25) {
+            ctx.fillRect(rw() - width * 0.5, rh() - height * 0.5, rw(), rh());
+          } else if (selector < 0.5) {
+            ctx.strokeRect(
+              rw() - width * 0.25,
+              rh() - height * 0.25,
+              rw(),
+              rh()
+            );
+          }
+          //   else if (selector < 0.6) {
+          //     ctx.arc(
+          //       rw(),
+          //       rh(),
+          //       Math.max(width, height) * Math.random(),
+          //       360 * Math.random(),
+          //       360 * Math.random()
+          //     );
+          //     ctx.fill();
+          //   }
+          else if (selector < 0.75) {
+            loopCircle(ctx);
+          } else {
+            vennCircle(ctx);
+            // ctx.arc(rw(), rh(), rh(), 360 * Math.random(), 360 * Math.random());
+            // ctx.stroke();
+          }
+          ctx.closePath();
+        }
+        canvas.addEventListener("click", (e) => {
+          var link = document.createElement("a");
+          link.download = "rndart.png";
+          link.href = e.srcElement.toDataURL();
+          link.click();
+          //   console.log("hello");
+          //   console.log(e.srcElement);
+          //   let c = e.srcElement.getContext("2d");
+          //   const data = c.getImageData(0, 0, width, height);
+        });
+        parent.append(canvas);
+      }
+      document.addEventListener("DOMContentLoaded", () => {
+        for (let i = 0; i < 1; i++) {
+          render();
+        }
+      });
+    </script>
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      canvas {
+        width: 100%;
+        height: auto;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hello"></div>
+  </body>
+</html>
