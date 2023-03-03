@@ -3,6 +3,7 @@
     <script lang="js" type="module">
       const width = window.innerWidth * 4;
       const height = window.innerHeight * 4;
+
       function coinFlip() {
         return Math.random() > 0.5;
       }
@@ -12,24 +13,31 @@
       function rh() {
         return Math.random() * height;
       }
+      function erw() {
+        return Math.random() * width * 1.5 - 0.5 * width;
+      }
+      function erh() {
+        return Math.random() * height * 1.5 - 0.5 * height;
+      }
       function ra() {
         return Math.random() * 360;
       }
       function color() {
-        return `rgba(${Math.random() * 255},${Math.random() *
-          255},${Math.random() * 255}, ${Math.random()})`;
+        return `rgba(${Math.random() * 255},${Math.random() * 255},${
+          Math.random() * 255
+        }, ${Math.random()})`;
       }
       function loopCircle(ctx) {
         const start = {
-          x: Math.random() * width * 1.5 - width * 0.5,
-          y: Math.random() * height * 1.5 - height * 0.5,
+          x: erw(),
+          y: erh(),
           r: rh(),
           sa: ra(),
           ea: ra(),
         };
         const end = {
-          x: Math.random() * width * 1.5 - width * 0.5,
-          y: Math.random() * height * 1.5 - height * 0.5,
+          x: erw(),
+          y: erh(),
           r: rh(),
           sa: ra(),
           ea: ra(),
@@ -51,8 +59,8 @@
       }
       function vennCircle(ctx) {
         const center = {
-          x: Math.random() * width * 1.5 - width * 0.5,
-          y: Math.random() * height * 1.5 - height * 0.5,
+          x: erw(),
+          y: erh(),
           r: rh(),
           sa: ra(),
           ea: ra(),
@@ -76,42 +84,17 @@
         }
       }
       function render() {
-        const parent = document.getElementById("hello");
+        const parent = document.getElementById("parent");
         const canvas = document.createElement("canvas");
 
         canvas.width = width;
         canvas.height = height;
 
         const ctx = canvas.getContext("2d");
-        let gradientSelect = Math.random();
-        // if (gradientSelect < 0.65) {
-        //   let gradient = null;
-        //   if (gradientSelect < 0.3) {
-        //     gradient = ctx.createLinearGradient(
-        //       0,
-        //       height * Math.random(),
-        //       width,
-        //       height * Math.random()
-        //     );
-        //   } else {
-        //     gradient = ctx.createConicGradient(
-        //       360 * Math.random(),
-        //       height * Math.random(),
-        //       width * Math.random()
-        //     );
-        //   }
 
-        //   gradient.addColorStop(0, color());
-        //   for (let i = 0; i < 100; i++) {
-        //     gradient.addColorStop(Math.random(), color());
-        //     if (Math.random() > 0.5) break;
-        //   }
-        //   ctx.fillStyle = gradient;
-        //   ctx.fillRect(0, 0, width, height);
-        // } else {
         ctx.fillStyle = color();
         ctx.fillRect(0, 0, width, height);
-        // }
+
         for (let i = 0; i < 50 * Math.random(); i++) {
           ctx.beginPath();
           ctx.fillStyle = color();
@@ -122,19 +105,9 @@
           } else {
             ctx.setLineDash([Math.random() * 300, Math.random() * 300]);
           }
-          //   if (coinFlip()) {
-          //     ctx.lineJoin = "miter";
-          //   } else {
-          //     ctx.lineJoin = "round";
-          //   }
-          //   if (coinFlip()) {
-          //     ctx.lineCap = "butt";
-          //   } else {
-          //     ctx.lineCap = "square";
-          //   }
+
           const selector = Math.random();
 
-          //   vennCircle(ctx);
           if (selector < 0.25) {
             ctx.fillRect(rw() - width * 0.5, rh() - height * 0.5, rw(), rh());
           } else if (selector < 0.5) {
@@ -144,23 +117,10 @@
               rw(),
               rh()
             );
-          }
-          //   else if (selector < 0.6) {
-          //     ctx.arc(
-          //       rw(),
-          //       rh(),
-          //       Math.max(width, height) * Math.random(),
-          //       360 * Math.random(),
-          //       360 * Math.random()
-          //     );
-          //     ctx.fill();
-          //   }
-          else if (selector < 0.75) {
+          } else if (selector < 0.75) {
             loopCircle(ctx);
           } else {
             vennCircle(ctx);
-            // ctx.arc(rw(), rh(), rh(), 360 * Math.random(), 360 * Math.random());
-            // ctx.stroke();
           }
           ctx.closePath();
         }
@@ -169,10 +129,6 @@
           link.download = "rndart.png";
           link.href = e.srcElement.toDataURL();
           link.click();
-          //   console.log("hello");
-          //   console.log(e.srcElement);
-          //   let c = e.srcElement.getContext("2d");
-          //   const data = c.getImageData(0, 0, width, height);
         });
         parent.append(canvas);
       }
@@ -195,6 +151,6 @@
     </style>
   </head>
   <body>
-    <div id="hello"></div>
+    <div id="parent"></div>
   </body>
 </html>
