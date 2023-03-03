@@ -23,120 +23,203 @@
         return Math.random() * 360;
       }
       function color() {
-        return `rgba(${Math.random() * 255},${Math.random() * 255},${
+        return `rgba(${Math.round(Math.random() * 255)},${Math.round(
           Math.random() * 255
-        }, ${Math.random()})`;
+        )},${Math.round(Math.random() * 255)}, ${
+          Math.round(Math.random() * 100) / 100
+        })`;
       }
-      function loopCircle(ctx) {
-        const start = {
-          x: erw(),
-          y: erh(),
-          r: rh(),
-          sa: ra(),
-          ea: ra(),
-        };
-        const end = {
-          x: erw(),
-          y: erh(),
-          r: rh(),
-          sa: ra(),
-          ea: ra(),
-        };
+      function rDash() {
+        return coinFlip() ? [] : [Math.random() * 300, Math.random() * 300];
+      }
+      function rLineWidth() {
+        return Math.max(2, Math.random() * 500 - 300);
+      }
 
-        const step = Math.round(100 * Math.random());
-        for (let i = 0; i < step; i++) {
-          ctx.beginPath();
-          ctx.arc(
-            start.x + (i * (end.x - start.x)) / step,
-            start.y + (i * (end.y - start.y)) / step,
-            start.r + (i * (end.r - start.r)) / step,
-            start.sa + (i * (end.sa - start.sa)) / step,
-            start.ea + (i * (end.ea - start.ea)) / step
-          );
-          ctx.stroke();
-          ctx.closePath();
+      // TODO: blur effects?
+      function operations() {
+        // Add background
+        const ops = [];
+        ops.push(new FillRect(0, 0, width, height, color()));
+        // Add random operations
+        for (let i = 0; i < 50 * Math.random(); i++) {
+          ops.push(rndOperation());
+        }
+        return ops;
+      }
+      function rndOperation() {
+        const selector = Math.random();
+
+        if (selector < 0.25) {
+          return FillRect.random();
+        } else if (selector < 0.5) {
+          return StrokeRect.random();
+        } else if (selector < 0.75) {
+          return LoopCircle.random();
+        } else {
+          return VennCircle.random();
         }
       }
-      function vennCircle(ctx) {
-        const center = {
-          x: erw(),
-          y: erh(),
-          r: rh(),
-          sa: ra(),
-          ea: ra(),
-        };
-        const count = Math.random() * 10;
-        const offset = Math.random() * center.r;
-        const startAngle = ra();
 
-        for (let i = 0; i < count; i++) {
-          const angle = startAngle + (i * 360) / count;
-
-          ctx.beginPath();
-          ctx.arc(
-            center.x + offset * Math.sin((Math.PI * angle) / 180),
-            center.y + offset * Math.cos((Math.PI * angle) / 180),
-            center.r,
-            center.sa + angle,
-            center.ea + angle
-          );
-          ctx.fill();
-        }
-      }
-      function render() {
+      function renderOperations(ops) {
         const parent = document.getElementById("parent");
         const canvas = document.createElement("canvas");
 
         canvas.width = width;
         canvas.height = height;
-
         const ctx = canvas.getContext("2d");
-
-        ctx.fillStyle = color();
-        ctx.fillRect(0, 0, width, height);
-
-        for (let i = 0; i < 50 * Math.random(); i++) {
+        for (let i = 0; i < ops.length; i++) {
+          console.log(ops[i]);
           ctx.beginPath();
-          ctx.fillStyle = color();
-          ctx.strokeStyle = color();
-          ctx.lineWidth = Math.max(2, Math.random() * 500 - 300);
-          if (coinFlip()) {
-            ctx.setLineDash([]);
-          } else {
-            ctx.setLineDash([Math.random() * 300, Math.random() * 300]);
-          }
-
-          const selector = Math.random();
-
-          if (selector < 0.25) {
-            ctx.fillRect(rw() - width * 0.5, rh() - height * 0.5, rw(), rh());
-          } else if (selector < 0.5) {
-            ctx.strokeRect(
-              rw() - width * 0.25,
-              rh() - height * 0.25,
-              rw(),
-              rh()
-            );
-          } else if (selector < 0.75) {
-            loopCircle(ctx);
-          } else {
-            vennCircle(ctx);
-          }
+          const o = ops[i];
+          o.draw(ctx);
           ctx.closePath();
         }
-        canvas.addEventListener("click", (e) => {
-          var link = document.createElement("a");
-          link.download = "rndart.png";
-          link.href = e.srcElement.toDataURL();
-          link.click();
-        });
-        parent.append(canvas);
+        return canvas;
       }
+
       document.addEventListener("DOMContentLoaded", () => {
         for (let i = 0; i < 1; i++) {
-          render();
+          const ops = operations();
+          const canvas = renderOperations(ops);
+          canvas.addEventListener("click", (e) => {
+            var link = document.createElement("a");
+            link.download = "rndart.png";
+            link.href = e.srcElement.toDataURL();
+            link.click();
+          });
+          document.getElementById("parent").append(canvas);
         }
       });
+
+      class FillRect {
+        type = "fillRect";
+        constructor(x, y, w, h, color) {
+          this.x = x;
+          this.y = y;
+          this.w = w;
+          this.h = h;
+          this.color = color;
+        }
+        static random() {
+          const r = new FillRect();
+          r.color = color();
+          r.x = rw() - width * 0.5;
+          r.y = rh() - height * 0.5;
+          r.w = rw();
+          r.h = rh();
+          return r;
+        }
+        draw(ctx) {
+          ctx.fillStyle = this.color;
+          ctx.fillRect(this.x, this.y, this.w, this.h);
+        }
+      }
+      class StrokeRect {
+        type = "strokeRect";
+        static random() {
+          const r = new StrokeRect();
+          r.color = color();
+          r.x = rw() - width * 0.5;
+          r.y = rh() - height * 0.5;
+          r.w = rw();
+          r.h = rh();
+          r.dash = rDash();
+          r.lineWidth = rLineWidth();
+
+          return r;
+        }
+        draw(ctx) {
+          ctx.strokeStyle = this.color;
+          ctx.lineWidth = this.lineWidth || 1;
+          ctx.setLineDash(this.dash || []);
+          ctx.strokeRect(this.x, this.y, this.w, this.h);
+        }
+      }
+      class VennCircle {
+        type = "vennCircle";
+        static random() {
+          const center = {
+            x: erw(),
+            y: erh(),
+            r: rh(),
+            sa: ra(),
+            ea: ra(),
+          };
+          let c = new VennCircle();
+          c.color = color();
+          c.center = center;
+          c.count = Math.random() * 10;
+          c.offset = Math.random() * center.r;
+          c.startAngle = ra();
+          return c;
+        }
+        draw(ctx) {
+          ctx.fillStyle = this.color;
+          for (let i = 0; i < this.count; i++) {
+            const angle = this.startAngle + (i * 360) / this.count;
+
+            ctx.beginPath();
+            ctx.arc(
+              this.center.x + this.offset * Math.sin((Math.PI * angle) / 180),
+              this.center.y + this.offset * Math.cos((Math.PI * angle) / 180),
+              this.center.r,
+              this.center.sa + angle,
+              this.center.ea + angle
+            );
+            ctx.fill();
+          }
+        }
+      }
+      class LoopCircle {
+        type = "loopCircle";
+        static random() {
+          const start = {
+            x: erw(),
+            y: erh(),
+            r: rh(),
+            sa: ra(),
+            ea: ra(),
+          };
+          const end = {
+            x: erw(),
+            y: erh(),
+            r: rh(),
+            sa: ra(),
+            ea: ra(),
+          };
+
+          const step = Math.round(100 * Math.random());
+          const c = new LoopCircle();
+
+          c.start = start;
+          c.end = end;
+          c.step = step;
+          c.color = color();
+          c.dash = rDash();
+          c.lineWidth = rLineWidth();
+          return c;
+        }
+        draw(ctx) {
+          ctx.strokeStyle = this.color;
+          ctx.lineWidth = this.lineWidth || 1;
+          ctx.setLineDash(this.dash || []);
+          // ctx.filter = "blur(20px)";
+          for (let i = 0; i < this.step; i++) {
+            ctx.beginPath();
+            ctx.arc(
+              this.start.x + (i * (this.end.x - this.start.x)) / this.step,
+              this.start.y + (i * (this.end.y - this.start.y)) / this.step,
+              this.start.r + (i * (this.end.r - this.start.r)) / this.step,
+              this.start.sa + (i * (this.end.sa - this.start.sa)) / this.step,
+              this.start.ea + (i * (this.end.ea - this.start.ea)) / this.step
+            );
+            ctx.stroke();
+            ctx.closePath();
+          }
+          // ctx.filter = "";
+        }
+      }
     </script>
     <style>
       body {
