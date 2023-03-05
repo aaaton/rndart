@@ -15,10 +15,9 @@ function rw() {
 }
 function rh() {
   return rw();
-  return Math.random() * height();
 }
 function erw() {
-  return range(-0.5, 1.5);
+  return range(-0.1, 1.1);
   //   return Math.random() * width() * 1.5 - 0.5 * width();
 }
 function erh() {
@@ -31,9 +30,8 @@ function ra() {
 function color() {
   return `rgba(${Math.round(Math.random() * 255)},${Math.round(
     Math.random() * 255
-  )},${Math.round(Math.random() * 255)}, ${
-    Math.round(Math.random() * 100) / 100
-  })`;
+  )},${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 100) /
+    100})`;
 }
 function rDash() {
   return coinFlip() ? [] : [Math.random(), Math.random()];

@@ -1,12 +1,12 @@
 import { coinFlip, color, erh, erw, ra, rDash, rh, rLineWidth } from "../utils";
-import { Drawable } from "./drawable";
+import { BaseDrawable, Drawable } from "./drawable";
 import React from "react";
-class LoopCircle implements Drawable {
+class LoopCircle extends BaseDrawable {
+  description?: string | undefined;
   type = "Loop Circles";
   start = { x: 0, y: 0, r: 0, sa: 0, ea: 0 };
   end = { x: 0, y: 0, r: 0, sa: 0, ea: 0 };
   step = 1;
-  color = "rgb(0,0,0)";
   dash = [] as number[];
   lineWidth = 1;
   stroke = false;
@@ -65,8 +65,13 @@ class LoopCircle implements Drawable {
     }
     // ctx.filter = "";
   }
-  ui() {
-    return <div>Loop circles tools</div>;
+  regenerate(): void {
+    let random = LoopCircle.random() as any;
+    Object.keys(this)
+      .filter((v) => v != "color" && v !== "description")
+      .forEach((k) => {
+        (this as any)[k] = random[k];
+      });
   }
 }
 

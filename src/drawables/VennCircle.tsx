@@ -1,8 +1,10 @@
 import { coinFlip, color, erh, erw, ra, rDash, rh, rLineWidth } from "../utils";
-import { Drawable } from "./drawable";
+import { BaseDrawable } from "./drawable";
 import React from "react";
 
-class VennCircle implements Drawable {
+class VennCircle extends BaseDrawable {
+  description?: string | undefined;
+
   type = "Venn Circles";
   center = { x: 0, y: 0, r: 0, sa: 0, ea: 0 };
   color = "rgb(0,0,0)";
@@ -23,7 +25,7 @@ class VennCircle implements Drawable {
     let c = new VennCircle();
     c.color = color();
     c.center = center;
-    c.count = Math.random() * 10;
+    c.count = Math.floor(Math.random() * 10);
     c.offset = Math.random() * center.r;
     c.startAngle = ra();
     c.dash = rDash();
@@ -58,8 +60,14 @@ class VennCircle implements Drawable {
       ctx.closePath();
     }
   }
-  ui() {
-    return <div>Venn Circles tweak central</div>;
+
+  regenerate(): void {
+    let random = VennCircle.random() as any;
+    Object.keys(this)
+      .filter((v) => v != "color" && v !== "description")
+      .forEach((k) => {
+        (this as any)[k] = random[k];
+      });
   }
 }
 

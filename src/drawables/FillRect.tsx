@@ -1,19 +1,20 @@
 import { color, erh, erw, rh, rw } from "../utils";
-import { Drawable } from "./drawable";
+import { BaseDrawable, Drawable } from "./drawable";
 import React, { useState } from "react";
 import { SketchPicker } from "react-color";
-import { BsSquareFill } from "react-icons/bs";
+import { BsPalette2, BsSquareFill } from "react-icons/bs";
+import { RxReload } from "react-icons/rx";
 // If FillRect is a component, can I just render the components as is?
 // Do I not need
-class FillRect implements Drawable {
+class FillRect extends BaseDrawable {
   type = "Filled Rectangle";
   description?: string;
   x: number;
   y: number;
   w: number;
   h: number;
-  color: string;
   constructor(x: number, y: number, w: number, h: number, color: string) {
+    super();
     this.x = x;
     this.y = y;
     this.w = w;
@@ -29,13 +30,13 @@ class FillRect implements Drawable {
     ctx.fillStyle = this.color;
     ctx.fillRect(this.x * w, this.y * h, this.w * w, this.h * h);
   }
-  ui() {
-    return (
-      <div>
-        Color: <BsSquareFill color={this.color} />{" "}
-        <SketchPicker onChangeComplete={(e) => console.log(e)} />
-      </div>
-    );
+  regenerate(): void {
+    let random = FillRect.random() as any;
+    Object.keys(this)
+      .filter((v) => v != "color" && v !== "description")
+      .forEach((k) => {
+        (this as any)[k] = random[k];
+      });
   }
 }
 export { FillRect };

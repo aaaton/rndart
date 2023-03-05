@@ -1,7 +1,6 @@
 import { color, erh, erw, rDash, rh, rLineWidth, rw } from "../utils";
-import { Drawable } from "./drawable";
+
 import { FillRect } from "./FillRect";
-import React from "react";
 
 class StrokeRect extends FillRect {
   type = "Stroked Rectangle";
@@ -31,11 +30,17 @@ class StrokeRect extends FillRect {
       rDash(),
       rLineWidth()
     );
-
     r.dash = rDash();
     r.lineWidth = rLineWidth();
-
     return r;
+  }
+  regenerate(): void {
+    let random = StrokeRect.random() as any;
+    Object.keys(this)
+      .filter((v) => v != "color" && v !== "description")
+      .forEach((k) => {
+        (this as any)[k] = random[k];
+      });
   }
   draw(ctx: CanvasRenderingContext2D) {
     const w = ctx.canvas.width;
@@ -46,9 +51,6 @@ class StrokeRect extends FillRect {
     ctx.lineWidth = Math.max(1, this.lineWidth * l) || 1;
     ctx.setLineDash(this.dash.map((v) => Math.max(1, v * l)) || []);
     ctx.strokeRect(this.x * w, this.y * h, this.w * w, this.h * h);
-  }
-  ui() {
-    return <div>Stroooke</div>;
   }
 }
 

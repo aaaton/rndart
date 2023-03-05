@@ -24,10 +24,18 @@ function App() {
     const bg = new FillRect(0, 0, 1, 1, color());
     bg.description = "Background color";
     ops.push(bg);
-    // Add random operations
+    // // Add random operations
     for (let i = 0; i < 50 * Math.random(); i++) {
       ops.push(rndOperation());
     }
+
+    // Debug VennCircles
+    // let v = VennCircle.random();
+    // v.center.x = 0.5;
+    // v.center.y = 0.5;
+    // v.center.r = 0.1;
+
+    // ops.push(v);
 
     setOperations(ops);
   }
@@ -90,6 +98,10 @@ function App() {
     ]);
   }
 
+  function rerender() {
+    setOperations([...operations]);
+  }
+
   // rndOperations();
   return (
     <div className="App">
@@ -103,7 +115,12 @@ function App() {
         }}
         hasOperations={operations.length > 0}
       />
-      <Layers operations={operations} remove={remove} move={move} />
+      <Layers
+        operations={operations}
+        remove={remove}
+        move={move}
+        rerender={rerender}
+      />
       <Rendering operations={operations} />
     </div>
   );

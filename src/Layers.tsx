@@ -1,19 +1,21 @@
 import React, { useState } from "react";
+import { BsLayers } from "react-icons/bs";
 import { RxCrossCircled } from "react-icons/rx";
 import { Drawable } from "./drawables/drawable";
 type Props = {
   operations: Drawable[];
+  rerender: () => void;
   remove: (index: number) => void;
   move: (from: number, to: number) => void;
 };
-const Layers = ({ operations, remove, move }: Props) => {
+const Layers = ({ operations, rerender, remove, move }: Props) => {
   const [visible, setVisible] = useState(false);
   const [toggled, setToggled] = useState(-1);
 
   return (
     <div className={`layers ${visible ? "open" : ""}`}>
       <div className="button" onClick={() => setVisible(!visible)}>
-        Layers
+        Layers <BsLayers />
       </div>
       {visible && (
         <div className="layers-list">
@@ -29,7 +31,6 @@ const Layers = ({ operations, remove, move }: Props) => {
                   (e.target as any).style.paddingTop = "";
                 }}
                 onDrop={(e) => {
-                  console.log("Dropping");
                   const from = JSON.parse(e.dataTransfer.getData("Text"));
                   (e.target as any).style.paddingTop = "";
                   move(from, key);
@@ -57,8 +58,7 @@ const Layers = ({ operations, remove, move }: Props) => {
                       {o.type}
                     </span>
                     <div
-                      className="icon-button"
-                      style={{ float: "right" }}
+                      className="icon-button top-right"
                       onClick={() => remove(key)}
                     >
                       <RxCrossCircled />
@@ -66,7 +66,7 @@ const Layers = ({ operations, remove, move }: Props) => {
                   </div>
                   {open && (
                     <div className="layer-body">
-                      {o.description} {o.ui()}
+                      {o.description} {o.ui(rerender)}
                     </div>
                   )}
                 </div>
