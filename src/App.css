@@ -75,7 +75,7 @@
   margin:8px 0;
 }
 .layer-title {
-  user-select: none;
+  user-select:none;
   cursor:pointer;
 }
 .layer-body {
@@ -83,6 +83,13 @@
   background-color:white;
   border-radius:4px;
   padding:4px;
+}
+.icon-button{
+  color:#999;
+  cursor: pointer;
+}
+.icon-button:hover {
+ color:darkred;
 }
 @keyframes App-logo-spin {
   from {

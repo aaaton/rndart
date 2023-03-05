@@ -28,7 +28,7 @@ function App() {
     for (let i = 0; i < 50 * Math.random(); i++) {
       ops.push(rndOperation());
     }
-    console.log(ops);
+
     setOperations(ops);
   }
 
@@ -71,6 +71,25 @@ function App() {
     link.click();
   }
 
+  function remove(index: number) {
+    setOperations([
+      ...operations.slice(0, index),
+      ...operations.slice(index + 1),
+    ]);
+  }
+  function move(from: number, to: number) {
+    let without = [...operations.slice(0, from), ...operations.slice(from + 1)];
+    let to2 = to;
+    if (from < to) {
+      to2 -= 1;
+    }
+    setOperations([
+      ...without.slice(0, to2),
+      operations[from],
+      ...without.slice(to2),
+    ]);
+  }
+
   // rndOperations();
   return (
     <div className="App">
@@ -84,7 +103,7 @@ function App() {
         }}
         hasOperations={operations.length > 0}
       />
-      <Layers operations={operations} />
+      <Layers operations={operations} remove={remove} move={move} />
       <Rendering operations={operations} />
     </div>
   );

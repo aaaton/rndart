@@ -3,7 +3,8 @@ import { Drawable } from "./drawable";
 import React, { useState } from "react";
 import { SketchPicker } from "react-color";
 import { BsSquareFill } from "react-icons/bs";
-
+// If FillRect is a component, can I just render the components as is?
+// Do I not need
 class FillRect implements Drawable {
   type = "Filled Rectangle";
   description?: string;
