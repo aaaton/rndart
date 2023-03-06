@@ -38,5 +38,12 @@ class FillRect extends BaseDrawable {
         (this as any)[k] = random[k];
       });
   }
+  setCenter(x: number, y: number): void {
+    this.x = x;
+    this.y = y;
+  }
+  size(): number {
+    return Math.max(this.w, this.h);
+  }
 }
 export { FillRect };

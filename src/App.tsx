@@ -11,6 +11,8 @@ import { FillRect } from "./drawables/FillRect";
 import { StrokeRect } from "./drawables/StrokeRect";
 import { LoopCircle } from "./drawables/LoopCircle";
 import { VennCircle } from "./drawables/VennCircle";
+import { Venn } from "./drawables/Venn";
+import { Circle } from "./drawables/Circle";
 
 function App() {
   const [operations, setOperations] = useState([] as Drawable[]);
@@ -25,9 +27,9 @@ function App() {
     bg.description = "Background color";
     ops.push(bg);
     // // Add random operations
-    for (let i = 0; i < 50 * Math.random(); i++) {
-      ops.push(rndOperation());
-    }
+    // for (let i = 0; i < 50 * Math.random(); i++) {
+    //   ops.push(rndOperation());
+    // }
 
     // Debug VennCircles
     // let v = VennCircle.random();
@@ -36,7 +38,16 @@ function App() {
     // v.center.r = 0.1;
 
     // ops.push(v);
+    let r = FillRect.random();
 
+    const c = new Circle();
+    c.r = 0.1;
+    let v = new Venn(new Venn(new Venn(c)));
+    v.x = 0.5;
+    v.y = 0.5;
+
+    ops.push(v);
+    // ops.push(new Circle());
     setOperations(ops);
   }
 
@@ -55,7 +66,7 @@ function App() {
   function recolor() {
     setOperations(
       operations.map((o) => {
-        o.color = color();
+        o.recolor();
         return o;
       })
     );
