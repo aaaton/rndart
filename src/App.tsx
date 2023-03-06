@@ -13,6 +13,7 @@ import { LoopCircle } from "./drawables/LoopCircle";
 import { VennCircle } from "./drawables/VennCircle";
 import { Venn } from "./drawables/Venn";
 import { Circle } from "./drawables/Circle";
+import { Rectangle } from "./drawables/Rectangle";
 
 function App() {
   const [operations, setOperations] = useState([] as Drawable[]);
@@ -40,9 +41,10 @@ function App() {
     // ops.push(v);
     let r = FillRect.random();
 
-    const c = new Circle();
-    c.r = 0.1;
-    let v = new Venn(new Venn(new Venn(c)));
+    const c = new Rectangle();
+    c.w = 0.1;
+    c.h = 0.2;
+    let v = new Venn(c);
     v.x = 0.5;
     v.y = 0.5;
 
