@@ -6,8 +6,6 @@ import { BaseDrawable } from "./drawable";
 class Circle extends BaseDrawable {
   type = "Circle";
   r: number;
-  x: number;
-  y: number;
   dash = [] as number[];
   lineWidth = 1;
   stroke = false;
@@ -21,6 +19,7 @@ class Circle extends BaseDrawable {
     this.stroke = coinFlip();
   }
   draw(ctx: CanvasRenderingContext2D): void {
+    if (!this.visible) return;
     const w = ctx.canvas.width;
     const h = ctx.canvas.height;
     const l = Math.min(w, h) * 0.25;

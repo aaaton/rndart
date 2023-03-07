@@ -4,11 +4,15 @@
 
 - [ ] Split into simple shapes: circles and squares and Make "VennCircle" into an iterative process that can be applied to anything. LoopCircle should be the same thing
 
-  - [ ] Make a Rectangle placable from the center
+  - [x] Make a Rectangle placable from the center
   - [x] Venn iteration. (Possibly a bug in the placements sometimes)
+  - [ ] Loop iteration
 
 - [x] Make it possible to modify a layer (at least re-generate or recolor it)
-- [ ] Make it possible to add a layer of a certain type
+- [x] Make it possible to add a layer of a certain type
+- [ ] Grid iteration
+- [ ] Normal curve splash iteration
+- [x] Move drawable
 
 ### `npm start`
 

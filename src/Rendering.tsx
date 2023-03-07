@@ -3,15 +3,18 @@ import { Drawable } from "./drawables/drawable";
 
 type Props = {
   operations: Drawable[];
+  mouseDrag: (e: any) => void;
+  mouseDown: (e: any) => void;
 };
 // TODO: have one canvas per operation instead
 // If we can re-render the right thing that will make it faster
-const Rendering = ({ operations }: Props) => {
+const Rendering = ({ operations, mouseDrag, mouseDown }: Props) => {
   const canvasRef = useRef(null);
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
+  const [mouse, setMouse] = useState(false);
   // Redraw seems to lag up a bit too much
   //   useEffect(() => {
   //     function handleResize() {
@@ -32,6 +35,17 @@ const Rendering = ({ operations }: Props) => {
     }
   }, [operations, windowSize]);
 
-  return <canvas ref={canvasRef} id="rendering" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      id="rendering"
+      onMouseDown={(e) => {
+        setMouse(true);
+        mouseDown(e);
+      }}
+      onMouseUp={() => setMouse(false)}
+      onMouseMove={(e) => mouse && mouseDrag({ x: e.clientX, y: e.clientY })}
+    />
+  );
 };
 export default Rendering;

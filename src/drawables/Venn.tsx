@@ -5,8 +5,6 @@ import { BaseDrawable, Drawable } from "./drawable";
 class Venn extends BaseDrawable {
   type: string;
   shape: Drawable;
-  x: number;
-  y: number;
   count = 1;
   offset = 0;
   startAngle = 0;
@@ -18,11 +16,12 @@ class Venn extends BaseDrawable {
     this.count = Math.floor(range(2, 10));
     this.offset = range(0.1, 1.5) * shape.size();
     this.startAngle = ra();
-
+    this.color = shape.color;
     this.x = rw();
     this.y = rh();
   }
   draw(ctx: CanvasRenderingContext2D) {
+    if (!this.visible) return;
     const w = ctx.canvas.width;
     const h = ctx.canvas.height;
     for (let i = 0; i < this.count; i++) {

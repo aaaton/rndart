@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import { BsLayers } from "react-icons/bs";
 import { RxCrossCircled } from "react-icons/rx";
 import { Drawable } from "./drawables/drawable";
+import Layer from "./Layer";
 type Props = {
   operations: Drawable[];
   rerender: () => void;
   remove: (index: number) => void;
   move: (from: number, to: number) => void;
+  select: (index: number) => void;
+  selected: number;
 };
-const Layers = ({ operations, rerender, remove, move }: Props) => {
+const Layers = (props: Props) => {
   const [visible, setVisible] = useState(false);
-  const [toggled, setToggled] = useState(-1);
-
+  let { operations } = props;
   return (
     <div className={`layers ${visible ? "open" : ""}`}>
       <div className="button" onClick={() => setVisible(!visible)}>
@@ -20,57 +22,14 @@ const Layers = ({ operations, rerender, remove, move }: Props) => {
       {visible && (
         <div className="layers-list">
           {operations.map((o, key) => {
-            const open = toggled === key;
             return (
-              <div
-                draggable="true"
-                onDragStart={(e) => {
-                  e.dataTransfer.setData("Text", JSON.stringify(key));
-                }}
-                onDragLeave={(e) => {
-                  (e.target as any).style.paddingTop = "";
-                }}
-                onDrop={(e) => {
-                  const from = JSON.parse(e.dataTransfer.getData("Text"));
-                  (e.target as any).style.paddingTop = "";
-                  move(from, key);
-                }}
-                onDragOver={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  if ((e.target as any).className == "dragContainer") {
-                    (e.target as any).style.paddingTop = "40px";
-                  }
-                }}
-                className="dragContainer"
-                style={{ padding: "4px 0" }}
+              <Layer
+                index={key}
+                open={props.selected == key}
+                op={o}
                 key={key}
-              >
-                <div
-                  className={`layer ${open ? "open" : ""}`}
-                  style={{ backgroundColor: o.color }}
-                >
-                  <div>
-                    <span
-                      className="layer-title"
-                      onClick={() => (open ? setToggled(-1) : setToggled(key))}
-                    >
-                      {o.type}
-                    </span>
-                    <div
-                      className="icon-button top-right"
-                      onClick={() => remove(key)}
-                    >
-                      <RxCrossCircled />
-                    </div>
-                  </div>
-                  {open && (
-                    <div className="layer-body">
-                      {o.description} {o.ui(rerender)}
-                    </div>
-                  )}
-                </div>
-              </div>
+                {...props}
+              />
             );
           })}
         </div>

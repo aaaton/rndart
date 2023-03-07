@@ -39,6 +39,7 @@ class LoopCircle extends BaseDrawable {
     return c;
   }
   draw(ctx: CanvasRenderingContext2D) {
+    if (!this.visible) return;
     const w = ctx.canvas.width;
     const h = ctx.canvas.height;
     const l = Math.min(w, h) * 0.25;
@@ -72,6 +73,11 @@ class LoopCircle extends BaseDrawable {
       .forEach((k) => {
         (this as any)[k] = random[k];
       });
+  }
+  ui(rerender: () => void): JSX.Element {
+    const basic = super.ui(rerender);
+    return <div>{basic}</div>;
+    // return basic;
   }
 }
 

@@ -1,23 +1,29 @@
 import React from "react";
-import { BsPalette2 } from "react-icons/bs";
+import { BsEyeFill, BsEyeSlashFill, BsPalette2 } from "react-icons/bs";
 import { RxReload } from "react-icons/rx";
 import { color, erh, erw } from "../utils";
+export const operationTypes = ["rectangle", "circle", "venn"];
+
 export interface Drawable {
   color: string;
   type: string;
   description?: string;
+  visible: boolean;
   draw(ctx: CanvasRenderingContext2D): void;
   ui(rerender: () => void): JSX.Element;
   regenerate(): void;
+  center(): { x: number; y: number };
   setCenter(x: number, y: number): void;
   size(): number;
   recolor(): void;
+  toggleVisible(): void;
 }
 
 export abstract class BaseDrawable implements Drawable {
   color = "";
   type = "base drawable";
   description?: string | undefined;
+  visible = true;
   x = 0;
   y = 0;
   constructor() {
@@ -41,6 +47,12 @@ export abstract class BaseDrawable implements Drawable {
   recolor() {
     this.color = color();
   }
+  toggleVisible() {
+    this.visible = !this.visible;
+  }
+  center() {
+    return { x: this.x, y: this.y };
+  }
   ui(rerender: () => void): JSX.Element {
     const setColor = () => {
       this.recolor();
@@ -57,8 +69,6 @@ export abstract class BaseDrawable implements Drawable {
             Recolor
             <BsPalette2 color={this.color} />
           </span>
-        </p>
-        <p>
           <span className="button" onClick={regen}>
             Regenerate <RxReload />
           </span>

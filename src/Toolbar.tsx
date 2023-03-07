@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import { BsCloudDownload, BsPalette2, BsPlusCircle } from "react-icons/bs";
 import { RxReload, RxShuffle } from "react-icons/rx";
 
@@ -7,17 +7,27 @@ const ToolButton = ({
   children,
   onclick,
   disabled,
+  onHover,
 }: {
   children?: ReactNode;
   onclick: () => void;
   disabled?: boolean;
+  onHover?: JSX.Element;
 }) => {
+  const [mouseOver, setMouseOver] = useState(false);
   return (
     <div
-      onClick={() => (!disabled ? onclick() : () => {})}
-      className={`button ${disabled ? "disabled" : ""}`}
+      onMouseEnter={() => setMouseOver(true)}
+      onMouseLeave={() => setMouseOver(false)}
+      style={{ position: "relative" }}
     >
-      {children}
+      <div
+        onClick={() => (!disabled ? onclick() : () => {})}
+        className={`button ${disabled ? "disabled" : ""}`}
+      >
+        {children}
+      </div>
+      {mouseOver && onHover}
     </div>
   );
 };
@@ -25,7 +35,7 @@ type ToolbarProps = {
   randomize: () => void;
   download: () => void;
   recolor: () => void;
-  addRandom: () => void;
+  addRandom: (op?: string) => void;
   hasOperations: boolean;
 };
 const Toolbar = ({
@@ -35,13 +45,20 @@ const Toolbar = ({
   addRandom,
   hasOperations,
 }: ToolbarProps) => {
+  const addList = (
+    <div style={{ position: "absolute" }}>
+      <ToolButton onclick={() => addRandom("rectangle")}>Rectangle</ToolButton>
+      <ToolButton onclick={() => addRandom("circle")}>Circle</ToolButton>
+      <ToolButton onclick={() => addRandom("venn")}>Venn</ToolButton>
+    </div>
+  );
   return (
     <div id="toolbar" className="toolBar">
       <ToolButton onclick={randomize}>
         Randomize <RxReload />{" "}
       </ToolButton>
-      <ToolButton onclick={addRandom}>
-        Add <BsPlusCircle />{" "}
+      <ToolButton onclick={addRandom} onHover={addList}>
+        Add <BsPlusCircle />
       </ToolButton>
       <ToolButton onclick={recolor} disabled={!hasOperations}>
         Recolor <BsPalette2 />

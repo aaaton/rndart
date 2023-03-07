@@ -5,8 +5,6 @@ import { BaseDrawable, Drawable } from "./drawable";
 class Rectangle extends BaseDrawable {
   type = "Rectangle";
   description?: string;
-  x: number;
-  y: number;
   w: number;
   h: number;
   dash: number[];
@@ -23,7 +21,15 @@ class Rectangle extends BaseDrawable {
     this.lineWidth = rLineWidth();
     this.stroked = coinFlip();
   }
+  static background() {
+    let r = new Rectangle();
+    r.y = r.x = 0.5;
+    r.w = r.h = 1.0;
+    r.stroked = false;
+    return r;
+  }
   draw(ctx: CanvasRenderingContext2D) {
+    if (!this.visible) return;
     const w = ctx.canvas.width;
     const h = ctx.canvas.height;
     const l = Math.min(w, h) * 0.25;

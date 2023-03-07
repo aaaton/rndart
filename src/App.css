@@ -22,7 +22,7 @@
   user-select: none;
   transition: all 0.2s ease-out;
 }
-.button.disabled {
+.disabled {
   color:#aaa!important;
   background-color:rgba(0,0,0,0)!important;
   cursor:auto;
@@ -102,8 +102,8 @@
 }
 .top-right {
   position:absolute;
-  top:2px;
-  right:2px;
+  top:6px;
+  right:6px;
 }
 @keyframes App-logo-spin {
   from {
