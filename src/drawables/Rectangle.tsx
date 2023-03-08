@@ -2,6 +2,7 @@ import { coinFlip, color, erh, erw, rDash, rh, rLineWidth, rw } from "../utils";
 import { BaseDrawable, Drawable } from "./drawable";
 
 // Center placed rectangle
+// TODO: Should we have a random angle?
 class Rectangle extends BaseDrawable {
   type = "Rectangle";
   description?: string;
@@ -28,33 +29,39 @@ class Rectangle extends BaseDrawable {
     r.stroked = false;
     return r;
   }
+  random(): Drawable {
+    return new Rectangle();
+  }
+
   draw(ctx: CanvasRenderingContext2D) {
     if (!this.visible) return;
-    const w = ctx.canvas.width;
-    const h = ctx.canvas.height;
-    const l = Math.min(w, h) * 0.25;
+    const { w, h, l } = this.getSizes(ctx);
+
     ctx.fillStyle = this.color;
     ctx.strokeStyle = this.color;
     ctx.lineWidth = Math.max(1, this.lineWidth * l) || 1;
     ctx.setLineDash(this.dash.map((v) => Math.max(1, v * l)) || []);
-    let x = this.x - this.w / 2;
-    let y = this.y - this.h / 2;
+    let x = this.x - (this.w * this.scale) / 2;
+    let y = this.y - (this.h * this.scale) / 2;
     ctx.beginPath();
     if (this.stroked) {
-      ctx.strokeRect(x * w, y * h, this.w * w, this.h * h);
+      ctx.strokeRect(
+        x * w,
+        y * h,
+        this.w * w * this.scale,
+        this.h * h * this.scale
+      );
     } else {
-      ctx.fillRect(x * w, y * h, this.w * w, this.h * h);
+      ctx.fillRect(
+        x * w,
+        y * h,
+        this.w * w * this.scale,
+        this.h * h * this.scale
+      );
     }
     ctx.closePath();
   }
-  regenerate(): void {
-    let random = new Rectangle() as any;
-    Object.keys(this)
-      .filter((v) => v != "color" && v !== "description")
-      .forEach((k) => {
-        (this as any)[k] = random[k];
-      });
-  }
+
   setCenter(x: number, y: number): void {
     this.x = x;
     this.y = y;

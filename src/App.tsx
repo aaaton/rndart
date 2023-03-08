@@ -13,6 +13,7 @@ import { LoopCircle } from "./drawables/LoopCircle";
 import { Venn } from "./drawables/Venn";
 import { Circle } from "./drawables/Circle";
 import { Rectangle } from "./drawables/Rectangle";
+import { Loop } from "./drawables/Loop";
 
 type Position = { x: number; y: number };
 function App() {
@@ -50,15 +51,21 @@ function App() {
     setOperations(ops);
   }
 
-  function rndOperation(op?: string): Drawable {
-    const index = Math.floor(range(0, operationTypes.length));
-    switch (op || operationTypes[index]) {
+  function rndOperation(op?: string, operations?: string[]): Drawable {
+    const index = Math.floor(range(0, (operations || operationTypes).length));
+    switch (op || (operations || operationTypes)[index]) {
       case "rectangle":
         return new Rectangle();
       case "circle":
         return new Circle();
       case "venn":
-        return new Venn(rndOperation());
+        return new Venn(
+          rndOperation(undefined, ["rectangle", "circle", "venn"])
+        );
+      case "loop":
+        return new Loop(
+          rndOperation(undefined, ["circle", "rectangle", "venn"])
+        );
       default:
         console.log("How did we get here?", index);
         return new Rectangle();

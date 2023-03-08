@@ -49,6 +49,7 @@ const Toolbar = ({
     <div style={{ position: "absolute" }}>
       <ToolButton onclick={() => addRandom("rectangle")}>Rectangle</ToolButton>
       <ToolButton onclick={() => addRandom("circle")}>Circle</ToolButton>
+      <ToolButton onclick={() => addRandom("loop")}>Loop</ToolButton>
       <ToolButton onclick={() => addRandom("venn")}>Venn</ToolButton>
     </div>
   );

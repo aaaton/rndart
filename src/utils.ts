@@ -7,7 +7,9 @@ function height() {
   return window.innerHeight * scale;
 }
 function coinFlip() {
-  return Math.random() > 0.5;
+  const r = Math.random();
+  console.log(r);
+  return r >= 0.48;
 }
 function rw() {
   return Math.random();
