@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from "react";
 import { BsCloudDownload, BsPalette2, BsPlusCircle } from "react-icons/bs";
-import { RxReload, RxShuffle } from "react-icons/rx";
+import { RxReload } from "react-icons/rx";
 
 // TODO: Make this look cool
 const ToolButton = ({

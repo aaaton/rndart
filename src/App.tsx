@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 
-import logo from "./logo.svg";
 import "./App.css";
 import { Drawable, operationTypes } from "./drawables/drawable";
-import { color, height, range, width } from "./utils";
-import Rendering from "./Rendering";
-import Toolbar from "./Toolbar";
-import Layers from "./Layers";
+import { range } from "./utils";
+import Rendering from "./components/Rendering";
+import Toolbar from "./components/Toolbar";
+import Layers from "./components/Layers";
 
-import { LoopCircle } from "./drawables/LoopCircle";
 // import { VennCircle } from "./drawables/VennCircle";
 import { Venn } from "./drawables/Venn";
 import { Circle } from "./drawables/Circle";

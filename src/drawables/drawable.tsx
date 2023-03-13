@@ -1,6 +1,7 @@
 import React from "react";
 import { BsEyeFill, BsEyeSlashFill, BsPalette2 } from "react-icons/bs";
 import { RxReload } from "react-icons/rx";
+import PercentageRange from "../components/inputs/PercentageRange";
 import { color, erh, erw } from "../utils";
 export const operationTypes = ["rectangle", "circle", "venn", "loop"];
 
@@ -91,24 +92,22 @@ export abstract class BaseDrawable implements Drawable {
     return (
       <div className="ui">
         <p>
-          <input
-            className="number-input"
-            type="number"
-            min="0"
-            onInput={(e) => {
-              this.setScale((e.target as any).value / 100);
-              rerender();
-            }}
-            step="1"
-            value={Math.round(this.scale * 100)}
-          ></input>
-          <span className="button" onClick={setColor}>
+          <span className="button centered" onClick={setColor}>
             Recolor
             <BsPalette2 color={this.color} />
           </span>
-          <span className="button" onClick={regen}>
+          <span className="button centered" onClick={regen}>
             Regenerate <RxReload />
           </span>
+          <PercentageRange
+            label="Scale"
+            value={this.scale}
+            onInput={(v) => {
+              this.setScale(v);
+              rerender();
+            }}
+            max="300"
+          />
         </p>
       </div>
     );

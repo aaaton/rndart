@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { BsLayers } from "react-icons/bs";
-import { RxCrossCircled } from "react-icons/rx";
-import { Drawable } from "./drawables/drawable";
+import { Drawable } from "../drawables/drawable";
 import Layer from "./Layer";
 type Props = {
   operations: Drawable[];

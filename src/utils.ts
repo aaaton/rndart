@@ -35,7 +35,7 @@ function color() {
     100})`;
 }
 function rDash() {
-  return coinFlip() ? [] : [Math.random(), Math.random()];
+  return [Math.random(), Math.random()];
 }
 function rLineWidth() {
   return range(-0.5, 1);

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Drawable } from "./drawables/drawable";
+import { Drawable } from "../drawables/drawable";
 
 type Props = {
   operations: Drawable[];

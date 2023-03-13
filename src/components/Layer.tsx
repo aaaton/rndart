@@ -1,7 +1,7 @@
 import React from "react";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { RxCrossCircled } from "react-icons/rx";
-import { Drawable } from "./drawables/drawable";
+import { Drawable } from "../drawables/drawable";
 type Props = {
   index: number;
   op: Drawable;
@@ -14,7 +14,7 @@ type Props = {
 const Layer = ({ index, op, rerender, remove, move, open, select }: Props) => {
   return (
     <div
-      draggable="true"
+      draggable={!open}
       onDragStart={(e) => {
         e.dataTransfer.setData("Text", JSON.stringify(index));
       }}

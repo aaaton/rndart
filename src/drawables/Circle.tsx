@@ -1,11 +1,15 @@
 import { coinFlip, erh, range, rDash, rLineWidth } from "../utils";
 import { BaseDrawable, Drawable } from "./drawable";
+import React from "react";
+import PercentageRange from "../components/inputs/PercentageRange";
+import ToggleSwitch from "../components/inputs/ToggleSwitch";
 
 // TODO: Should we make part-circles too?
 // or is it enough that we have dashed mode?
 class Circle extends BaseDrawable {
   type = "Circle";
   r: number;
+  isDashed = false;
   dash = [] as number[];
   lineWidth = 1;
   stroked = false;
@@ -17,6 +21,7 @@ class Circle extends BaseDrawable {
     this.dash = rDash();
     this.lineWidth = rLineWidth();
     this.stroked = coinFlip();
+    this.isDashed = coinFlip();
   }
   draw(ctx: CanvasRenderingContext2D): void {
     if (!this.visible) return;
@@ -40,6 +45,70 @@ class Circle extends BaseDrawable {
   }
   random(): Drawable {
     return new Circle();
+  }
+  ui(rerender: () => void): JSX.Element {
+    let standard = super.ui(rerender);
+    return (
+      <div>
+        {standard}
+        <p>
+          <PercentageRange
+            label="Radius"
+            value={this.r}
+            onInput={(v) => {
+              this.r = v;
+              rerender();
+            }}
+            max="120"
+          />
+          <ToggleSwitch
+            label="Stroked"
+            value={this.stroked}
+            onInput={(v) => {
+              this.stroked = v;
+              rerender();
+            }}
+          />
+          <PercentageRange
+            label="Line Width"
+            value={this.lineWidth}
+            max="200"
+            onInput={(v) => {
+              this.lineWidth = v;
+              rerender();
+            }}
+            disabled={!this.stroked}
+          />
+          <ToggleSwitch
+            label="Dashed"
+            value={this.isDashed}
+            onInput={(v) => {
+              this.isDashed = v;
+              rerender();
+            }}
+            disabled={!this.stroked}
+          />
+          <PercentageRange
+            label="Fill"
+            value={this.dash[0]}
+            onInput={(v) => {
+              this.dash[0] = v;
+              rerender();
+            }}
+            disabled={!this.stroked}
+          />
+          <PercentageRange
+            label="Hole"
+            value={this.dash[1]}
+            onInput={(v) => {
+              this.dash[1] = v;
+              rerender();
+            }}
+            disabled={!this.stroked}
+          />
+        </p>
+      </div>
+    );
   }
 }
 

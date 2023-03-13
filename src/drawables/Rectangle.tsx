@@ -1,6 +1,8 @@
 import { coinFlip, color, erh, erw, rDash, rh, rLineWidth, rw } from "../utils";
 import { BaseDrawable, Drawable } from "./drawable";
 import React from "react";
+import PercentageRange from "../components/inputs/PercentageRange";
+import ToggleSwitch from "../components/inputs/ToggleSwitch";
 
 // Center placed rectangle
 // TODO: Should we have a random angle?
@@ -9,6 +11,7 @@ class Rectangle extends BaseDrawable {
   description?: string;
   w: number;
   h: number;
+  isDashed: boolean;
   dash: number[];
   lineWidth: number;
   stroked: boolean;
@@ -19,9 +22,10 @@ class Rectangle extends BaseDrawable {
     this.w = rw();
     this.h = rh();
     this.color = color();
-    this.dash = rDash();
+    this.dash = [Math.random(), Math.random()];
     this.lineWidth = rLineWidth();
     this.stroked = coinFlip();
+    this.isDashed = coinFlip();
   }
   static background() {
     let r = new Rectangle();
@@ -41,7 +45,9 @@ class Rectangle extends BaseDrawable {
     ctx.fillStyle = this.color;
     ctx.strokeStyle = this.color;
     ctx.lineWidth = Math.max(1, this.lineWidth * l) || 1;
-    ctx.setLineDash(this.dash.map((v) => Math.max(1, v * l)) || []);
+    ctx.setLineDash(
+      this.isDashed ? this.dash.map((v) => Math.max(1, v * l)) : []
+    );
     let x = this.x - (this.w * this.scale) / 2;
     let y = this.y - (this.h * this.scale) / 2;
     ctx.beginPath();
@@ -77,27 +83,68 @@ class Rectangle extends BaseDrawable {
       <div>
         {standard}
         <p>
-          <input
-            className="percentage-input"
-            type="number"
-            min="0"
-            onInput={(e) => {
-              this.w = (e.target as any).value / 100;
+          <PercentageRange
+            label="Width"
+            value={this.w}
+            onInput={(v) => {
+              this.w = v;
               rerender();
             }}
-            step="1"
-            value={Math.round(this.w * 100)}
+            max="120"
           />
-          <input
-            className="percentage-input"
-            type="number"
-            min="0"
-            onInput={(e) => {
-              this.h = (e.target as any).value / 100;
+          <PercentageRange
+            label="Height"
+            value={this.h}
+            onInput={(v) => {
+              this.h = v;
               rerender();
             }}
-            step="1"
-            value={Math.round(this.h * 100)}
+            max="120"
+          />
+          <ToggleSwitch
+            label="Stroked"
+            value={this.stroked}
+            onInput={(v) => {
+              this.stroked = v;
+              rerender();
+            }}
+          />
+          <PercentageRange
+            label="Line Width"
+            value={this.lineWidth}
+            max="200"
+            onInput={(v) => {
+              this.lineWidth = v;
+              rerender();
+            }}
+            disabled={!this.stroked}
+          />
+          <ToggleSwitch
+            label="Dashed"
+            value={this.isDashed}
+            onInput={(v) => {
+              this.isDashed = v;
+              rerender();
+            }}
+            disabled={!this.stroked}
+          />
+          <PercentageRange
+            label="Fill"
+            value={this.dash[0]}
+            onInput={(v) => {
+              this.dash[0] = v;
+              rerender();
+            }}
+            disabled={!this.stroked}
+          />
+          <PercentageRange
+            label="Hole"
+            value={this.dash[1]}
+            onInput={(v) => {
+              this.dash[1] = v;
+              rerender();
+            }}
+            disabled={!this.stroked}
           />
         </p>
       </div>
