@@ -47,6 +47,7 @@ function App() {
     // ops.push(v);
     // ops.push(new Circle());
     setOperations(ops);
+    setSelected(-1);
   }
 
   function rndOperation(op?: string, operations?: string[]): Drawable {

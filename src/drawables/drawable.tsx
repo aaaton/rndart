@@ -1,8 +1,12 @@
 import React from "react";
-import { BsEyeFill, BsEyeSlashFill, BsPalette2 } from "react-icons/bs";
+import { BsPalette2 } from "react-icons/bs";
+import { BiHorizontalCenter } from "react-icons/bi";
 import { RxReload } from "react-icons/rx";
 import PercentageRange from "../components/inputs/PercentageRange";
 import { color, erh, erw } from "../utils";
+import ToolButton from "../components/ToolButton";
+import { Loop } from "./Loop";
+import { Rectangle } from "./Rectangle";
 export const operationTypes = ["rectangle", "circle", "venn", "loop"];
 
 export interface Drawable {
@@ -15,6 +19,7 @@ export interface Drawable {
   scale: number;
   draw(ctx: CanvasRenderingContext2D): void;
   ui(rerender: () => void): JSX.Element;
+  specifics(rerender: () => void): JSX.Element;
   regenerate(): void;
   center(): { x: number; y: number };
   setCenter(x: number, y: number): void;
@@ -80,6 +85,9 @@ export abstract class BaseDrawable implements Drawable {
   setScale(scale: number): void {
     this.scale = scale;
   }
+  specifics(rerender: () => void): JSX.Element {
+    return <span></span>;
+  }
   ui(rerender: () => void): JSX.Element {
     const setColor = () => {
       this.recolor();
@@ -89,26 +97,57 @@ export abstract class BaseDrawable implements Drawable {
       this.regenerate();
       rerender();
     };
+    let specifics = this.specifics(rerender);
     return (
       <div className="ui">
-        <p>
-          <span className="button centered" onClick={setColor}>
-            Recolor
-            <BsPalette2 color={this.color} />
-          </span>
-          <span className="button centered" onClick={regen}>
-            Regenerate <RxReload />
-          </span>
-          <PercentageRange
-            label="Scale"
-            value={this.scale}
-            onInput={(v) => {
-              this.setScale(v);
-              rerender();
-            }}
-            max="300"
-          />
-        </p>
+        <span
+          className="button centered"
+          onClick={() => {
+            this.setCenter(0.5, 0.5);
+
+            rerender();
+          }}
+        >
+          <BiHorizontalCenter />
+          Center
+        </span>
+        <span className="button centered" onClick={setColor}>
+          <BsPalette2 />
+          Recolor
+        </span>
+        <span className="button centered" onClick={regen}>
+          <RxReload />
+          Regenerate
+        </span>
+        {/* <ToolButton
+            className="centered"
+            onclick={() => {}}
+            onHover={
+              <div className="dropdown" style={{ position: "absolute" }}>
+                <ToolButton
+                  onclick={() => {
+                    // let loop = new Loop(new Rectangle());
+                    // rerender();
+                  }}
+                >
+                  Loop
+                </ToolButton>
+                <ToolButton onclick={() => "venn"}>Venn</ToolButton>
+              </div>
+            }
+          >
+            Wrap...
+          </ToolButton> */}
+        <PercentageRange
+          label="Scale"
+          value={this.scale}
+          onInput={(v) => {
+            this.setScale(v);
+            rerender();
+          }}
+          max="300"
+        />
+        {specifics}
       </div>
     );
   }

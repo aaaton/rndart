@@ -76,77 +76,73 @@ class Rectangle extends BaseDrawable {
   size(): number {
     return Math.max(this.w, this.h);
   }
-
-  ui(rerender: () => void): JSX.Element {
-    let standard = super.ui(rerender);
+  specifics(rerender: () => void): JSX.Element {
     return (
       <div>
-        {standard}
-        <p>
-          <PercentageRange
-            label="Width"
-            value={this.w}
-            onInput={(v) => {
-              this.w = v;
-              rerender();
-            }}
-            max="120"
-          />
-          <PercentageRange
-            label="Height"
-            value={this.h}
-            onInput={(v) => {
-              this.h = v;
-              rerender();
-            }}
-            max="120"
-          />
-          <ToggleSwitch
-            label="Stroked"
-            value={this.stroked}
-            onInput={(v) => {
-              this.stroked = v;
-              rerender();
-            }}
-          />
-          <PercentageRange
-            label="Line Width"
-            value={this.lineWidth}
-            max="200"
-            onInput={(v) => {
-              this.lineWidth = v;
-              rerender();
-            }}
-            disabled={!this.stroked}
-          />
-          <ToggleSwitch
-            label="Dashed"
-            value={this.isDashed}
-            onInput={(v) => {
-              this.isDashed = v;
-              rerender();
-            }}
-            disabled={!this.stroked}
-          />
-          <PercentageRange
-            label="Fill"
-            value={this.dash[0]}
-            onInput={(v) => {
-              this.dash[0] = v;
-              rerender();
-            }}
-            disabled={!this.stroked}
-          />
-          <PercentageRange
-            label="Hole"
-            value={this.dash[1]}
-            onInput={(v) => {
-              this.dash[1] = v;
-              rerender();
-            }}
-            disabled={!this.stroked}
-          />
-        </p>
+        <h3>Rectangle</h3>
+        <PercentageRange
+          label="Width"
+          value={this.w}
+          onInput={(v) => {
+            this.w = v;
+            rerender();
+          }}
+          max="120"
+        />
+        <PercentageRange
+          label="Height"
+          value={this.h}
+          onInput={(v) => {
+            this.h = v;
+            rerender();
+          }}
+          max="120"
+        />
+        <ToggleSwitch
+          label="Stroked"
+          value={this.stroked}
+          onInput={(v) => {
+            this.stroked = v;
+            rerender();
+          }}
+        />
+        <PercentageRange
+          label="Line Width"
+          value={this.lineWidth}
+          max="200"
+          onInput={(v) => {
+            this.lineWidth = v;
+            rerender();
+          }}
+          disabled={!this.stroked}
+        />
+        <ToggleSwitch
+          label="Dashed"
+          value={this.isDashed}
+          onInput={(v) => {
+            this.isDashed = v;
+            rerender();
+          }}
+          disabled={!this.stroked}
+        />
+        <PercentageRange
+          label="Fill"
+          value={this.dash[0]}
+          onInput={(v) => {
+            this.dash[0] = v;
+            rerender();
+          }}
+          disabled={!this.stroked || !this.isDashed}
+        />
+        <PercentageRange
+          label="Hole"
+          value={this.dash[1]}
+          onInput={(v) => {
+            this.dash[1] = v;
+            rerender();
+          }}
+          disabled={!this.stroked || !this.isDashed}
+        />
       </div>
     );
   }

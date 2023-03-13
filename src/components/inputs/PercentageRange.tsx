@@ -7,6 +7,7 @@ type Props = {
   max?: number | string;
   step?: number | string;
   disabled?: boolean;
+  noPercentage?: boolean;
 };
 const PercentageRange = ({
   value,
@@ -16,6 +17,7 @@ const PercentageRange = ({
   max,
   step,
   disabled,
+  noPercentage,
 }: Props) => {
   return (
     <div className="percentage">
@@ -27,10 +29,12 @@ const PercentageRange = ({
         min={min || "1"}
         max={max || "100"}
         onInput={(e) => {
-          onInput((e.target as any).value / 100);
+          noPercentage
+            ? onInput((e.target as any).value)
+            : onInput((e.target as any).value / 100);
         }}
         step={step || "1"}
-        value={Math.round(value * 100)}
+        value={noPercentage ? value : Math.round(value * 100)}
       />
     </div>
   );

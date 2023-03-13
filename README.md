@@ -9,7 +9,7 @@
   - [x] Loop iteration
 
 - [x] Make it possible to modify a layer (at least re-generate or recolor it)
-- [ ] Make individual parameters modifiable
+- [x] Make individual parameters modifiable
 - [x] Make it possible to add a layer of a certain type
 - [ ] Grid iteration
 - [ ] Normal curve splash iteration

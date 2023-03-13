@@ -11,7 +11,10 @@
   padding:20px;
 }
 .button.centered {
-justify-content: center;
+  justify-content: center;
+  /* width:fit-content;
+  margin-left:auto;
+  margin-right:auto; */
 }
 
 .button {
@@ -46,8 +49,26 @@ justify-content: center;
   background-color:rgba(250,250,250,0.9);
 }
 
-.button>svg {
-  margin-left:4px;
+/* .button>svg:last-child {
+  margin-left:8px;
+} */
+.button>svg:first-child {
+  margin-right:8px;
+}
+.ui {
+  padding:8px;
+}
+.dropdown {
+  background-color: white;
+  /* border:1px solid #aaa; */
+  border-radius: 8px;
+  padding:10px;
+  box-shadow: 2px 3px 10px #aaa;
+  min-width:200px;
+}
+
+.dropdown > .button:hover {
+  box-shadow: 1px 1px 5px #ddd;
 }
 
 .layers {

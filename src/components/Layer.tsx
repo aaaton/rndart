@@ -64,11 +64,7 @@ const Layer = ({ index, op, rerender, remove, move, open, select }: Props) => {
             <RxCrossCircled />
           </div>
         </div>
-        {open && (
-          <div className="layer-body">
-            {op.description} {op.ui(rerender)}
-          </div>
-        )}
+        {open && <div className="layer-body">{op.ui(rerender)}</div>}
       </div>
     </div>
   );

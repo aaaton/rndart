@@ -1,6 +1,7 @@
-import { color, ra, range, rh, rw } from "../utils";
+import { ra, range, rh, rw } from "../utils";
 import { BaseDrawable, Drawable } from "./drawable";
-
+import React from "react";
+import PercentageRange from "../components/inputs/PercentageRange";
 // Will make a Venn-diagram out of any drawable
 class Venn extends BaseDrawable {
   type: string;
@@ -62,6 +63,52 @@ class Venn extends BaseDrawable {
   }
   size() {
     return this.shape.size() + this.offset;
+  }
+  specifics(rerender: () => void): JSX.Element {
+    const child = this.shape.specifics(rerender);
+    //   count = 1;
+    // offset = 0;
+    // startAngle = 0;
+
+    return (
+      <div>
+        <h3>Venn</h3>
+        <PercentageRange
+          noPercentage
+          label="Repetitions"
+          value={this.count}
+          onInput={(v) => {
+            this.count = v;
+            rerender();
+          }}
+          min="1"
+          max="25"
+        />
+        <PercentageRange
+          label="Distance to center"
+          value={this.offset}
+          onInput={(v) => {
+            this.offset = v;
+            rerender();
+          }}
+          min="1"
+          max="150"
+        />
+        <PercentageRange
+          label="Angle"
+          noPercentage
+          value={this.startAngle}
+          min="0"
+          max="360"
+          step={0.01}
+          onInput={(v) => {
+            this.startAngle = parseFloat(String(v));
+            rerender();
+          }}
+        />
+        {child}
+      </div>
+    );
   }
 }
 export { Venn };

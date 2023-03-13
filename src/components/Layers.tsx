@@ -16,7 +16,8 @@ const Layers = (props: Props) => {
   return (
     <div className={`layers ${visible ? "open" : ""}`}>
       <div className="button" onClick={() => setVisible(!visible)}>
-        Layers <BsLayers />
+        <BsLayers />
+        Layers
       </div>
       {visible && (
         <div className="layers-list">

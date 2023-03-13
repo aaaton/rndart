@@ -29,7 +29,9 @@ class Circle extends BaseDrawable {
     ctx.fillStyle = this.color;
     ctx.strokeStyle = this.color;
     ctx.lineWidth = Math.max(1, this.lineWidth * l) || 1;
-    ctx.setLineDash(this.dash.map((v) => Math.max(1, v * l)) || []);
+    ctx.setLineDash(
+      this.isDashed ? this.dash.map((v) => Math.max(1, v * l)) : []
+    );
     ctx.beginPath();
     ctx.arc(this.x * w, this.y * h, this.r * h * this.scale, 0, Math.PI * 2);
     if (this.stroked) {
@@ -46,67 +48,64 @@ class Circle extends BaseDrawable {
   random(): Drawable {
     return new Circle();
   }
-  ui(rerender: () => void): JSX.Element {
-    let standard = super.ui(rerender);
+  specifics(rerender: () => void): JSX.Element {
     return (
       <div>
-        {standard}
-        <p>
-          <PercentageRange
-            label="Radius"
-            value={this.r}
-            onInput={(v) => {
-              this.r = v;
-              rerender();
-            }}
-            max="120"
-          />
-          <ToggleSwitch
-            label="Stroked"
-            value={this.stroked}
-            onInput={(v) => {
-              this.stroked = v;
-              rerender();
-            }}
-          />
-          <PercentageRange
-            label="Line Width"
-            value={this.lineWidth}
-            max="200"
-            onInput={(v) => {
-              this.lineWidth = v;
-              rerender();
-            }}
-            disabled={!this.stroked}
-          />
-          <ToggleSwitch
-            label="Dashed"
-            value={this.isDashed}
-            onInput={(v) => {
-              this.isDashed = v;
-              rerender();
-            }}
-            disabled={!this.stroked}
-          />
-          <PercentageRange
-            label="Fill"
-            value={this.dash[0]}
-            onInput={(v) => {
-              this.dash[0] = v;
-              rerender();
-            }}
-            disabled={!this.stroked}
-          />
-          <PercentageRange
-            label="Hole"
-            value={this.dash[1]}
-            onInput={(v) => {
-              this.dash[1] = v;
-              rerender();
-            }}
-            disabled={!this.stroked}
-          />
-        </p>
+        <h3>Circle</h3>
+        <PercentageRange
+          label="Radius"
+          value={this.r}
+          onInput={(v) => {
+            this.r = v;
+            rerender();
+          }}
+          max="120"
+        />
+        <ToggleSwitch
+          label="Stroked"
+          value={this.stroked}
+          onInput={(v) => {
+            this.stroked = v;
+            rerender();
+          }}
+        />
+        <PercentageRange
+          label="Line Width"
+          value={this.lineWidth}
+          max="200"
+          onInput={(v) => {
+            this.lineWidth = v;
+            rerender();
+          }}
+          disabled={!this.stroked}
+        />
+        <ToggleSwitch
+          label="Dashed"
+          value={this.isDashed}
+          onInput={(v) => {
+            this.isDashed = v;
+            rerender();
+          }}
+          disabled={!this.stroked}
+        />
+        <PercentageRange
+          label="Fill"
+          value={this.dash[0]}
+          onInput={(v) => {
+            this.dash[0] = v;
+            rerender();
+          }}
+          disabled={!this.stroked || !this.isDashed}
+        />
+        <PercentageRange
+          label="Hole"
+          value={this.dash[1]}
+          onInput={(v) => {
+            this.dash[1] = v;
+            rerender();
+          }}
+          disabled={!this.stroked || !this.isDashed}
+        />
       </div>
     );
   }
