@@ -116,6 +116,7 @@ function App() {
       ...operations.slice(0, index),
       ...operations.slice(index + 1),
     ]);
+    setSelected(-1);
   }
   function move(from: number, to: number) {
     let without = [...operations.slice(0, from), ...operations.slice(from + 1)];
@@ -128,6 +129,7 @@ function App() {
       operations[from],
       ...without.slice(to2),
     ]);
+    setSelected(-1);
   }
 
   function rerender() {

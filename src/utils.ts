@@ -8,7 +8,6 @@ function height() {
 }
 function coinFlip() {
   const r = Math.random();
-  console.log(r);
   return r >= 0.48;
 }
 function rw() {

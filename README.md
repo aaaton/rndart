@@ -9,11 +9,15 @@
   - [x] Loop iteration
 
 - [x] Make it possible to modify a layer (at least re-generate or recolor it)
+- [ ] Make individual parameters modifiable
 - [x] Make it possible to add a layer of a certain type
 - [ ] Grid iteration
 - [ ] Normal curve splash iteration
 - [x] Move drawable
 - [x] Scale drawables
+- [x] Crashing on remove etc
+- [x] Crashing when rndmizing too fast
+- [x] Window resize
 
 ### `npm start`
 

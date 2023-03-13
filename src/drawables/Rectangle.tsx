@@ -1,5 +1,6 @@
 import { coinFlip, color, erh, erw, rDash, rh, rLineWidth, rw } from "../utils";
 import { BaseDrawable, Drawable } from "./drawable";
+import React from "react";
 
 // Center placed rectangle
 // TODO: Should we have a random angle?
@@ -68,6 +69,39 @@ class Rectangle extends BaseDrawable {
   }
   size(): number {
     return Math.max(this.w, this.h);
+  }
+
+  ui(rerender: () => void): JSX.Element {
+    let standard = super.ui(rerender);
+    return (
+      <div>
+        {standard}
+        <p>
+          <input
+            className="percentage-input"
+            type="number"
+            min="0"
+            onInput={(e) => {
+              this.w = (e.target as any).value / 100;
+              rerender();
+            }}
+            step="1"
+            value={Math.round(this.w * 100)}
+          />
+          <input
+            className="percentage-input"
+            type="number"
+            min="0"
+            onInput={(e) => {
+              this.h = (e.target as any).value / 100;
+              rerender();
+            }}
+            step="1"
+            value={Math.round(this.h * 100)}
+          />
+        </p>
+      </div>
+    );
   }
 }
 export { Rectangle };

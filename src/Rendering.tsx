@@ -15,22 +15,29 @@ const Rendering = ({ operations, mouseDrag, mouseDown }: Props) => {
     height: window.innerHeight,
   });
   const [mouse, setMouse] = useState(false);
-  // Redraw seems to lag up a bit too much
-  //   useEffect(() => {
-  //     function handleResize() {
-  //       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-  //     }
-  //     window.addEventListener("resize", handleResize);
-  //   });
+  // Setting redraw on a timer to not get too aggressive with the window changed events
+  useEffect(() => {
+    let windowResizeTimer: any = undefined;
+    function handleResize() {
+      clearTimeout(windowResizeTimer);
+      windowResizeTimer = setTimeout(() => {
+        setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+      }, 100);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
   useEffect(() => {
     const canvas = canvasRef.current;
     (canvas as any).width = windowSize.width;
     (canvas as any).height = windowSize.height;
+    const cloned = [...operations];
     const ctx = (canvas as any).getContext("2d") as CanvasRenderingContext2D;
-    for (let i = 0; i < operations.length; i++) {
+    for (let i = 0; i < cloned.length; i++) {
       ctx.beginPath();
-      const o = operations[i];
-      o.draw(ctx);
+      cloned[i].draw(ctx);
       ctx.closePath();
     }
   }, [operations, windowSize]);
