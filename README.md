@@ -11,13 +11,17 @@
 - [x] Make it possible to modify a layer (at least re-generate or recolor it)
 - [x] Make individual parameters modifiable
 - [x] Make it possible to add a layer of a certain type
-- [ ] Grid iteration
+- [x] Grid iteration
 - [ ] Normal curve splash iteration
 - [x] Move drawable
 - [x] Scale drawables
+
+### Bugs:
+
 - [x] Crashing on remove etc
 - [x] Crashing when rndmizing too fast
 - [x] Window resize
+- [ ] Venn rotates the wrong direction (also cool but make it optional)
 
 ### `npm start`
 

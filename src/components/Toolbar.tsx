@@ -23,6 +23,7 @@ const Toolbar = ({
       <ToolButton onclick={() => addRandom("circle")}>Circle</ToolButton>
       <ToolButton onclick={() => addRandom("loop")}>Loop</ToolButton>
       <ToolButton onclick={() => addRandom("venn")}>Venn</ToolButton>
+      <ToolButton onclick={() => addRandom("grid")}>Grid</ToolButton>
     </div>
   );
   return (

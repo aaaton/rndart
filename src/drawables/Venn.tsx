@@ -84,6 +84,7 @@ class Venn extends BaseDrawable {
           min="1"
           max="25"
         />
+        {this.offset}
         <PercentageRange
           label="Distance to center"
           value={this.offset}

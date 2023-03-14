@@ -12,6 +12,7 @@ import { Venn } from "./drawables/Venn";
 import { Circle } from "./drawables/Circle";
 import { Rectangle } from "./drawables/Rectangle";
 import { Loop } from "./drawables/Loop";
+import { Grid } from "./drawables/Grid";
 
 type Position = { x: number; y: number };
 function App() {
@@ -64,6 +65,10 @@ function App() {
       case "loop":
         return new Loop(
           rndOperation(undefined, ["circle", "rectangle", "venn"])
+        );
+      case "grid":
+        return new Grid(
+          rndOperation(undefined, ["circle", "rectangle", "venn", "loop"])
         );
       default:
         console.log("How did we get here?", index);
