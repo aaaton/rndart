@@ -38,7 +38,7 @@ class Venn extends BaseDrawable {
         this.offset * h * this.scale * Math.cos((Math.PI * angle) / 180);
       ctx.save();
       ctx.translate(x, y);
-      ctx.rotate((angle * Math.PI) / 180);
+      ctx.rotate(Math.PI - (angle * Math.PI) / 180);
       // TODO: rotate the pieces as well
       // Do we need to address the position of this.shape?
       this.shape.draw(ctx);
