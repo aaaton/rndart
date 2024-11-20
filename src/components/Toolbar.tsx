@@ -1,9 +1,10 @@
 import React, { ReactNode, useState } from "react";
 import { BsCloudDownload, BsPalette2, BsPlusCircle } from "react-icons/bs";
-import { RxReload } from "react-icons/rx";
+import { RxReload, RxTrash } from "react-icons/rx";
 import ToolButton from "./ToolButton";
 
 type ToolbarProps = {
+  blank: () => void;
   randomize: () => void;
   download: () => void;
   recolor: () => void;
@@ -11,6 +12,7 @@ type ToolbarProps = {
   hasOperations: boolean;
 };
 const Toolbar = ({
+  blank,
   randomize,
   download,
   recolor,
@@ -31,6 +33,10 @@ const Toolbar = ({
       <ToolButton onclick={randomize}>
         <RxReload />
         Randomize
+      </ToolButton>
+      <ToolButton onclick={blank}>
+        <RxTrash />
+        Blank
       </ToolButton>
       <ToolButton onclick={addRandom} onHover={addList}>
         <BsPlusCircle />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./App.css";
 import { Drawable, operationTypes } from "./drawables/drawable";
@@ -51,6 +51,11 @@ function App() {
     setSelected(-1);
   }
 
+  function reset() {
+    setOperations([]);
+    setSelected(-1);
+  }
+
   function rndOperation(op?: string, operations?: string[]): Drawable {
     const index = Math.floor(range(0, (operations || operationTypes).length));
     switch (op || (operations || operationTypes)[index]) {
@@ -60,15 +65,15 @@ function App() {
         return new Circle();
       case "venn":
         return new Venn(
-          rndOperation(undefined, ["rectangle", "circle", "venn"])
+          rndOperation(undefined, ["rectangle", "circle", "venn"]),
         );
       case "loop":
         return new Loop(
-          rndOperation(undefined, ["circle", "rectangle", "venn"])
+          rndOperation(undefined, ["circle", "rectangle", "venn"]),
         );
       case "grid":
         return new Grid(
-          rndOperation(undefined, ["circle", "rectangle", "venn", "loop"])
+          rndOperation(undefined, ["circle", "rectangle", "venn", "loop"]),
         );
       default:
         console.log("How did we get here?", index);
@@ -80,7 +85,7 @@ function App() {
       operations.map((o) => {
         o.recolor();
         return o;
-      })
+      }),
     );
   }
   function select(index: number) {
@@ -152,17 +157,25 @@ function App() {
     if (selected >= 0 && start && start.op) {
       operations[selected].setCenter(
         start.op.x + (e.x - start.mouse.x) / window.innerWidth,
-        start.op.y + (e.y - start.mouse.y) / window.innerHeight
+        start.op.y + (e.y - start.mouse.y) / window.innerHeight,
       );
       rerender();
     }
     // operations[selected].setCenter()
   }
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("new")) {
+      rndOperations();
+    }
+  }, []);
+
   // rndOperations();
   return (
     <div className="App">
       <Toolbar
+        blank={reset}
         randomize={rndOperations}
         download={download}
         recolor={recolor}
