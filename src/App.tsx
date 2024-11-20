@@ -6,6 +6,7 @@ import { range } from "./utils";
 import Rendering from "./components/Rendering";
 import Toolbar from "./components/Toolbar";
 import Layers from "./components/Layers";
+import canvasToSvg from "canvas-to-svg";
 
 // import { VennCircle } from "./drawables/VennCircle";
 import { Venn } from "./drawables/Venn";
@@ -120,6 +121,22 @@ function App() {
     link.click();
   }
 
+  function downloadSvg() {
+    const ctx = new canvasToSvg(window.innerWidth, window.innerHeight);
+    const bg = Rectangle.background();
+    bg.color = "rgb(255,255,255)";
+    bg.draw(ctx);
+    for (let i = 0; i < operations.length; i++) {
+      operations[i].draw(ctx);
+    }
+    // TODO: generate the data here as an SVG or high-resolution canvas
+    const link = document.createElement("a");
+    link.download = "rndart.svg";
+    const svg = ctx.getSerializedSvg();
+    link.href = `data:image/svg;charset=utf-8, ${svg}`;
+    link.click();
+  }
+
   function remove(index: number) {
     setOperations([
       ...operations.slice(0, index),
@@ -178,6 +195,7 @@ function App() {
         blank={reset}
         randomize={rndOperations}
         download={download}
+        downloadSvg={downloadSvg}
         recolor={recolor}
         addRandom={(op?: string) => {
           let o = rndOperation(op);

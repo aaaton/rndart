@@ -20,6 +20,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.0.11
         version: 18.3.1
+      canvas-to-svg:
+        specifier: 1.0.3
+        version: 1.0.3
       eslint:
         specifier: ^8.1.0
         version: 8.1.0
@@ -1784,6 +1787,9 @@ packages:
 
   caniuse-lite@1.0.30001680:
     resolution: {integrity: sha512-rPQy70G6AGUMnbwS1z6Xg+RkHYPAi18ihs47GH0jcxIG7wArmPgY3XbS2sRdBbxJljp3thdT8BIqv9ccCypiPA==}
+
+  canvas-to-svg@1.0.3:
+    resolution: {integrity: sha512-qWQKPW0lRkOCClRmKtTzC5dNLtdOCzEOPYWASvW9ggkq4cRYL0o8RnC4fPc4tNE5WGm5YzJTGFztFG0JuCGXcQ==}
 
   case-sensitive-paths-webpack-plugin@2.4.0:
     resolution: {integrity: sha512-roIFONhcxog0JSSWbvVAh3OocukmSgpqOH6YpMkCvav/ySIV3JKg4Dc8vYtQjYi/UxpNE36r/9v+VqTQqgkYmw==}
@@ -7668,6 +7674,8 @@ snapshots:
       lodash.uniq: 4.5.0
 
   caniuse-lite@1.0.30001680: {}
+
+  canvas-to-svg@1.0.3: {}
 
   case-sensitive-paths-webpack-plugin@2.4.0: {}
 
