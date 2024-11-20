@@ -33,8 +33,12 @@ const Toolbar = ({
 
   const downloadList = (
     <div style={{ position: "absolute" }}>
-      <ToolButton onclick={download}>PNG</ToolButton>
-      <ToolButton onclick={downloadSvg}>SVG</ToolButton>
+      <ToolButton onclick={download} disabled={!hasOperations}>
+        PNG
+      </ToolButton>
+      <ToolButton onclick={downloadSvg} disabled={!hasOperations}>
+        SVG
+      </ToolButton>
     </div>
   );
   return (
