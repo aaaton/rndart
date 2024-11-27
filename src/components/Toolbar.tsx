@@ -6,7 +6,7 @@ import ToolButton from "./ToolButton";
 type ToolbarProps = {
   blank: () => void;
   randomize: () => void;
-  download: () => void;
+  download: (multiplier: number) => void;
   downloadSvg: () => void;
   recolor: () => void;
   addRandom: (op?: string) => void;
@@ -22,7 +22,14 @@ const Toolbar = ({
   hasOperations,
 }: ToolbarProps) => {
   const addList = (
-    <div style={{ position: "absolute" }}>
+    <div
+      style={{
+        position: "absolute",
+        backgroundColor: "rgba(255,255,255,0.2)",
+        width: "160px",
+        borderRadius: "10px",
+      }}
+    >
       <ToolButton onclick={() => addRandom("rectangle")}>Rectangle</ToolButton>
       <ToolButton onclick={() => addRandom("circle")}>Circle</ToolButton>
       <ToolButton onclick={() => addRandom("loop")}>Loop</ToolButton>
@@ -32,12 +39,25 @@ const Toolbar = ({
   );
 
   const downloadList = (
-    <div style={{ position: "absolute" }}>
-      <ToolButton onclick={download} disabled={!hasOperations}>
-        PNG
-      </ToolButton>
+    <div
+      style={{
+        position: "absolute",
+        width: "240px",
+        backgroundColor: "rgba(255,255,255,0.2)",
+        borderRadius: "10px",
+      }}
+    >
       <ToolButton onclick={downloadSvg} disabled={!hasOperations}>
         SVG
+      </ToolButton>
+      <ToolButton onclick={() => download(1)} disabled={!hasOperations}>
+        PNG ({window.innerWidth}x{window.innerHeight} px)
+      </ToolButton>
+      <ToolButton onclick={() => download(2)} disabled={!hasOperations}>
+        PNG ({window.innerWidth * 2}x{window.innerHeight * 2} px)
+      </ToolButton>
+      <ToolButton onclick={() => download(4)} disabled={!hasOperations}>
+        PNG ({window.innerWidth * 4}x{window.innerHeight * 4} px)
       </ToolButton>
     </div>
   );

@@ -102,11 +102,11 @@ function App() {
     // }
   }
 
-  function download() {
+  function download(multiplier: number) {
     // Scale it up and redraw for export
     const canvas = document.createElement("canvas");
-    canvas.width = window.innerWidth * 2;
-    canvas.height = window.innerHeight * 2;
+    canvas.width = window.innerWidth * multiplier;
+    canvas.height = window.innerHeight * multiplier;
     const ctx = canvas.getContext("2d") as any;
     const bg = Rectangle.background();
     bg.color = "rgb(255,255,255)";
