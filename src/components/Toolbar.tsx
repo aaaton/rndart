@@ -8,6 +8,7 @@ type ToolbarProps = {
   randomize: () => void;
   download: (multiplier: number) => void;
   downloadSvg: () => void;
+  downloadPoster: () => void;
   recolor: () => void;
   addRandom: (op?: string) => void;
   hasOperations: boolean;
@@ -17,6 +18,7 @@ const Toolbar = ({
   randomize,
   download,
   downloadSvg,
+  downloadPoster,
   recolor,
   addRandom,
   hasOperations,
@@ -58,6 +60,9 @@ const Toolbar = ({
       </ToolButton>
       <ToolButton onclick={() => download(4)} disabled={!hasOperations}>
         PNG ({window.innerWidth * 4}x{window.innerHeight * 4} px)
+      </ToolButton>
+      <ToolButton onclick={() => downloadPoster()} disabled={!hasOperations}>
+        Poster (50x70 cm)
       </ToolButton>
     </div>
   );

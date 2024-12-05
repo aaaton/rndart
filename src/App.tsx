@@ -102,11 +102,51 @@ function App() {
     // }
   }
 
-  function download(multiplier: number) {
-    // Scale it up and redraw for export
-    const canvas = document.createElement("canvas");
-    canvas.width = window.innerWidth * multiplier;
-    canvas.height = window.innerHeight * multiplier;
+  function poster() {
+    const pxPerCm = 120;
+    let c1 = document.createElement("canvas");
+    c1.width = 45 * pxPerCm;
+    c1.height = 59 * pxPerCm;
+    c1 = drawOnCanvas(c1);
+    // Draw the outer white border canvas
+    const c2 = document.createElement("canvas");
+    c2.width = 50 * pxPerCm;
+    c2.height = 70 * pxPerCm;
+    let ctx = c2.getContext("2d") as CanvasRenderingContext2D;
+    const bg = Rectangle.background();
+    bg.color = "rgb(255,255,255)";
+    bg.draw(ctx);
+    // Add the rndart
+    ctx.drawImage(c1, 2.5 * pxPerCm, 2.5 * pxPerCm);
+
+    // Add the texts
+    ctx.textBaseline = "top";
+    ctx.fillStyle = "black";
+
+    ctx.font = "italic 212pt Futura";
+    ctx.fillText(
+      "rndart".split("").join(String.fromCharCode(8202)),
+      2.5 * pxPerCm,
+      63 * pxPerCm,
+    );
+
+    ctx.textAlign = "right";
+    ctx.font = "56pt Futura";
+    ctx.fillText("Math.random() on HTML Canvas", 47.5 * pxPerCm, 63 * pxPerCm);
+    ctx.fillText(
+      `Seed ${Math.round(Math.random() * 1000000000000000).toString(32)}`,
+      47.5 * pxPerCm,
+      64 * pxPerCm,
+    );
+    ctx.fillText("Print 1/1", 47.5 * pxPerCm, 65 * pxPerCm);
+
+    const link = document.createElement("a");
+    link.download = "rndart-poster.png";
+    link.href = c2.toDataURL();
+    link.click();
+  }
+
+  function drawOnCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
     const ctx = canvas.getContext("2d") as any;
     const bg = Rectangle.background();
     bg.color = "rgb(255,255,255)";
@@ -114,7 +154,15 @@ function App() {
     for (let i = 0; i < operations.length; i++) {
       operations[i].draw(ctx);
     }
-    // TODO: generate the data here as an SVG or high-resolution canvas
+    return canvas;
+  }
+
+  function download(multiplier: number) {
+    // Scale it up and redraw for export
+    let canvas = document.createElement("canvas");
+    canvas.width = window.innerWidth * multiplier;
+    canvas.height = window.innerHeight * multiplier;
+    canvas = drawOnCanvas(canvas);
     const link = document.createElement("a");
     link.download = "rndart.png";
     link.href = canvas.toDataURL();
@@ -196,6 +244,7 @@ function App() {
         randomize={rndOperations}
         download={download}
         downloadSvg={downloadSvg}
+        downloadPoster={poster}
         recolor={recolor}
         addRandom={(op?: string) => {
           let o = rndOperation(op);
